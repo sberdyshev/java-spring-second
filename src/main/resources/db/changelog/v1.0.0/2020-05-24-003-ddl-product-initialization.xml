@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <property name="uuid_type" value="uuid" dbms="postgresql"/>
+    <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
+
+    <changeSet id="create_table_product" author="Sergey Berdyshev">
+        <createTable tableName="product">
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="manufacturer" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="short_description" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="full_description" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price" type="numeric(15, 2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

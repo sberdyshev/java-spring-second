@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <property name="uuid_type" value="uuid" dbms="postgresql"/>
+    <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
+
+    <changeSet id="create_table_auth_user" author="Sergey Berdyshev">
+        <createTable tableName="auth_user">
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_name" type="varchar">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="password" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_table_auth_role" author="Sergey Berdyshev">
+        <createTable tableName="auth_role">
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(30)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_table_auth_user_role" author="Sergey Berdyshev">
+        <createTable tableName="auth_user_role">
+            <column name="user_id" type="${uuid_type}">
+                <constraints nullable="false" foreignKeyName="fk_user_role_table_to_user_table"
+                             references="auth_user(id)"/>
+            </column>
+            <column name="role_id" type="${uuid_type}">
+                <constraints nullable="false" foreignKeyName="fk_user_role_table_to_role_table"
+                             references="auth_role(id)"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="user_id, role_id"
+                       constraintName="pk_auth_user_role"
+                       tableName="auth_user_role"
+                       validate="true"/>
+    </changeSet>
+</databaseChangeLog>
