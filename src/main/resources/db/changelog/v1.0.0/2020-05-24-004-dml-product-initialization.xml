@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <property name="uuid_type" value="uuid" dbms="postgresql"/>
+    <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
+
+    <changeSet id="insert_products" author="Sergey Berdyshev">
+        <insert tableName="product">
+            <column name="name" value="iphone X"/>
+            <column name="manufacturer" value="apple"/>
+            <column name="short_description" value="a smartphone"/>
+            <column name="full_description" value="one of the best smartphones in the market"/>
+            <column name="price" value="95000.50"/>
+        </insert>
+        <insert tableName="product">
+            <column name="name" value="galaxy s10"/>
+            <column name="manufacturer" value="samsung"/>
+            <column name="short_description" value="a smartphone"/>
+            <column name="full_description" value="a good smartphone with a good price"/>
+            <column name="price" value="30000.00"/>
+        </insert>
+        <insert tableName="product">
+            <column name="name" value="galaxy s20"/>
+            <column name="manufacturer" value="samsung"/>
+            <column name="short_description" value="a smartphone"/>
+            <column name="full_description" value="one of the best smartphones in the market with a reasonable price"/>
+            <column name="price" value="79999.99"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

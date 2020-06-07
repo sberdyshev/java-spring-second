@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <include file="2020-05-24-001-ddl-user-and-role-initialization.xml" relativeToChangelogFile="true"/>
+    <include file="2020-05-24-002-dml-user-and-role-initialization.xml" relativeToChangelogFile="true"/>
+    <include file="2020-05-24-003-ddl-product-initialization.xml" relativeToChangelogFile="true"/>
+    <include file="2020-05-24-004-dml-product-initialization.xml" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <property name="uuid_type" value="uuid" dbms="postgresql"/>
+    <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
+
+    <changeSet id="insert_roles" author="Sergey Berdyshev">
+        <insert tableName="auth_role">
+            <column name="name" value="ROLE_USER"/>
+        </insert>
+        <insert tableName="auth_role">
+            <column name="name" value="ROLE_MANAGER"/>
+        </insert>
+        <insert tableName="auth_role">
+            <column name="name" value="ROLE_ADMIN"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert_users" author="Sergey Berdyshev">
+        <insert tableName="auth_user">
+            <column name="user_name" value="user1"/>
+            <column name="password" value="$2y$10$YWaZGWSu/dTbWaJ8kdrSs.IFbx6Wz2DLagf3.SX5qixsQJwnTYXLy"/>
+            <column name="first_name" value="Alexey"/>
+            <column name="last_name" value="GeekBrains"/>
+        </insert>
+        <insert tableName="auth_user">
+            <column name="user_name" value="user2"/>
+            <column name="password" value="$2y$10$YWaZGWSu/dTbWaJ8kdrSs.IFbx6Wz2DLagf3.SX5qixsQJwnTYXLy"/>
+            <column name="first_name" value="Sergey"/>
+            <column name="last_name" value="Berdyshev"/>
+        </insert>
+        <insert tableName="auth_user">
+            <column name="user_name" value="user3"/>
+            <column name="password" value="$2y$10$YWaZGWSu/dTbWaJ8kdrSs.IFbx6Wz2DLagf3.SX5qixsQJwnTYXLy"/>
+            <column name="first_name" value="Dmitry"/>
+            <column name="last_name" value="GeekBrains"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert_user_role_relations" author="Sergey Berdyshev">
+        <insert tableName="auth_user_role">
+            <column name="user_id" valueComputed="(SELECT id FROM auth_user WHERE user_name='user1')"/>
+            <column name="role_id" valueComputed="(SELECT id FROM auth_role WHERE name='ROLE_ADMIN')"/>
+        </insert>
+        <insert tableName="auth_user_role">
+            <column name="user_id" valueComputed="(SELECT id FROM auth_user WHERE user_name='user2')"/>
+            <column name="role_id" valueComputed="(SELECT id FROM auth_role WHERE name='ROLE_MANAGER')"/>
+        </insert>
+        <insert tableName="auth_user_role">
+            <column name="user_id" valueComputed="(SELECT id FROM auth_user WHERE user_name='user3')"/>
+            <column name="role_id" valueComputed="(SELECT id FROM auth_role WHERE name='ROLE_USER')"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
