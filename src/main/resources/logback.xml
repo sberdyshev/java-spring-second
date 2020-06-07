@@ -11,7 +11,7 @@
         <file> ${LOG_PATH}app.log </file>
         <append>true</append>
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} %-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} | %-5level | traceId %X{traceId} | session %X{session} | user %X{user} | %logger{35} - %msg%n </pattern>
         </encoder>
     </appender>
 

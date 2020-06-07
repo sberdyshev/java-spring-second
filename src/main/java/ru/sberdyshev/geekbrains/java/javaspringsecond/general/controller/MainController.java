@@ -1,14 +1,17 @@
 package ru.sberdyshev.geekbrains.java.javaspringsecond.general.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.product.domain.Product;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.product.service.ProductService;
 
