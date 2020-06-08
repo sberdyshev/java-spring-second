@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class Slf4jMDCFilterConfiguration {
+public class MDCFilterConfiguration {
 
     public static final String DEFAULT_RESPONSE_TOKEN_HEADER = "Response_Token";
     public static final String DEFAULT_MDC_UUID_TOKEN_KEY = "traceId";
@@ -17,7 +17,7 @@ public class Slf4jMDCFilterConfiguration {
     @Bean
     public FilterRegistrationBean servletRegistrationBean() {
         final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-        final Slf4jMDCFilter logMDCFilter = new Slf4jMDCFilter(responseHeader, mdcTokenKey, requestHeader);
+        final MDCFilter logMDCFilter = new MDCFilter(responseHeader, mdcTokenKey, requestHeader);
         registrationBean.setFilter(logMDCFilter);
         registrationBean.setOrder(2);
         return registrationBean;

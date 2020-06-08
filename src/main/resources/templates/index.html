@@ -70,15 +70,15 @@
     </tr>
     </thead>
 
-    <tr class="myTableRow responsive-row" th:if="${productPage.hasContent()}"
-        th:each="product : ${productPage.content}">
-        <td th:text="${product.name}"/>
-        <td th:text="${product.manufacturer}"/>
-        <td th:text="${product.shortDescription}"/>
-        <td th:text="${product.price}"/>
+    <tr class="myTableRow responsive-row" th:if="${productDtoPage.hasContent()}"
+        th:each="productDto : ${productDtoPage.content}">
+        <td th:text="${productDto.name}"/>
+        <td th:text="${productDto.manufacturer}"/>
+        <td th:text="${productDto.shortDescription}"/>
+        <td th:text="${productDto.price}"/>
     </tr>
 
-    <tr class="myTableRow responsive-row" th:unless="${productPage.hasContent()}">
+    <tr class="myTableRow responsive-row" th:unless="${productDtoPage.hasContent()}">
         <td colspan="4">No data</td>
     </tr>
 </table>

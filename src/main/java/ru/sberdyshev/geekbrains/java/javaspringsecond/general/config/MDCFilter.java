@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Slf4jMDCFilter extends OncePerRequestFilter {
+public class MDCFilter extends OncePerRequestFilter {
 
     private final String responseHeader;
     private final String mdcTokenKey;

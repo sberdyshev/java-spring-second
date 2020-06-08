@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.product.domain.Product;
+import ru.sberdyshev.geekbrains.java.javaspringsecond.product.dto.ProductDto;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.product.service.ProductService;
 
 @Slf4j
@@ -38,8 +39,8 @@ public class MainController {
             page = PageRequest.of(pageNumber - 1, pageSize);
         }
         //todo сделать маппер domain <-> dto
-        Page<Product> productPage = productService.getAllProductsPageable(page);
-        model.addAttribute("productPage", productPage);
+        Page<ProductDto> productDtoPage = productService.getAllProductsPageable(page);
+        model.addAttribute("productDtoPage", productDtoPage);
         return "index";
     }
 }
