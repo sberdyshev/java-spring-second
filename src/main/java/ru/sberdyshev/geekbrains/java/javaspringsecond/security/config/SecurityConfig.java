@@ -20,6 +20,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    protected CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
+    @Autowired
+    public void setCustomAuthenticationSuccessHandler(CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler) {
+        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+    }
 
     @Bean
     PasswordEncoder getEncoder() {
@@ -41,39 +47,64 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider);
     }
 
-    @Configuration
-    @Order(1)
-    public static class ApiWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .antMatcher("/api/**")
-                    .authorizeRequests()
-                    .anyRequest()
-                    .hasRole("ADMIN")
-                    .and()
-                    .httpBasic(Customizer.withDefaults())
-                    .csrf().disable()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        }
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/resources/**").permitAll()
+                .antMatchers("/register/**").permitAll()
+                .antMatchers("/products/**").permitAll()
+                .antMatchers("/orders/**").authenticated()
+                .antMatchers("/users/**").authenticated()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .anyRequest().authenticated()
+//                    .and()
+//                    .formLogin(Customizer.withDefaults());
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .loginProcessingUrl("/authenticateTheUser")
+                .successHandler(customAuthenticationSuccessHandler)
+                .permitAll()
+                .and()
+                .logout()
+                .logoutSuccessUrl("/products")
+                .permitAll();
     }
 
-    @Configuration
-    @Order(2)
-    public static class UiWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+//    @Configuration
+//    @Order(1)
+//    public static class ApiWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+//
+//        @Override
+//        protected void configure(HttpSecurity http) throws Exception {
+//            http
+//                    .antMatcher("/api/**")
+//                    .authorizeRequests()
+//                    .anyRequest()
+//                    .hasRole("ADMIN")
+//                    .and()
+//                    .httpBasic(Customizer.withDefaults())
+//                    .csrf().disable()
+//                    .sessionManagement()
+//                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//        }
+//    }
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .authorizeRequests()
-                    .antMatchers("/resources/*").permitAll()
-                    .antMatchers("/products/**").permitAll()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .anyRequest().authenticated()
-                    .and()
-                    .formLogin(Customizer.withDefaults());
-        }
-    }
+//    @Configuration
+//    @Order(2)
+//    public static class UiWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+//
+//        @Override
+//        protected void configure(HttpSecurity http) throws Exception {
+//            http
+//                    .authorizeRequests()
+//                    .antMatchers("/resources/*").permitAll()
+//                    .antMatchers("/admin/**").hasRole("ADMIN")
+//                    .anyRequest().authenticated()
+//                    .and()
+//                    .formLogin(Customizer.withDefaults());
+//
+//
+//        }
+//    }
 }

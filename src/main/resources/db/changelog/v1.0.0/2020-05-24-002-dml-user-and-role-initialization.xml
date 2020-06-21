@@ -6,9 +6,6 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <property name="uuid_type" value="uuid" dbms="postgresql"/>
-    <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
-
     <changeSet id="insert_roles" author="Sergey Berdyshev">
         <insert tableName="auth_role">
             <column name="name" value="ROLE_USER"/>

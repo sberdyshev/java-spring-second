@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My e-shop</title>
+    <link rel="icon" href="img/Fevicon.png" type="image/png">
+
+    <link rel="stylesheet" href="vendors/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="vendors/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="vendors/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="vendors/linericon/style.css">
+    <link rel="stylesheet" href="vendors/owl-carousel/owl.theme.default.min.css">
+    <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="container-center">
+    <div class="container-center-2">
+        <div id="loginbox" style="margin-top: 50px;">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="navbar-brand logo_h">Sign In</div>
+                </div>
+                <div style="padding-top: 30px" class="panel-body">
+                    <form th:action="@{/authenticateTheUser}" method="POST" class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-xs-15">
+                                <div>
+                                    <div th:if="${param.error} != null">
+                                        <div class="alert alert-danger col-xs-offset-1 col-xs-10">
+                                            Invalid username and password.
+                                        </div>
+                                    </div>
+                                    <div th:if="${param.logout} != null">
+                                        <div class="alert alert-success col-xs-offset-1 col-xs-10">
+                                            You have been logged out.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 25px" class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <input type="text" name="username" placeholder="username" class="form-control">
+                        </div>
+                        <div style="margin-bottom: 25px" class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                            <input type="password" name="password" placeholder="password" class="form-control">
+                        </div>
+                        <div style="margin-top: 10px">
+                            <div>
+                                <button type="submit" class="button">Login</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

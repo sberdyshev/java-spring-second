@@ -1,15 +1,13 @@
 package ru.sberdyshev.geekbrains.java.javaspringsecond.product.domain;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -18,9 +16,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "product")
+@Table(name = "prd_product")
 public class Product {
-
 
     @Id
     @GeneratedValue
@@ -42,14 +39,21 @@ public class Product {
     @Column(name = "price")
     private BigDecimal price;
 
+    @OneToOne(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            optional = false,
+            orphanRemoval = true)
+    @PrimaryKeyJoinColumn
+    private ProductImage productImage;
+
     @Override
     public String toString() {
-        return "Product{" +
-                "id='" + id + '\'' + ", " +
-                "name='" + name + '\'' + ", " +
-                "manufacturer='" + manufacturer + '\'' + ", " +
-                "shortDescription='" + shortDescription + '\'' + ", " +
-                "fullDescription='" + fullDescription + '\'' + ", " +
-                "price=" + price + '}';
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String objectAsJson = mapper.writeValueAsString(this);
+            return objectAsJson;
+        } catch (JsonProcessingException jsonProcessingException) {
+            return this.getClass().getName();
+        }
     }
 }

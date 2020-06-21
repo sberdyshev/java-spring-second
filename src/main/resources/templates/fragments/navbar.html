@@ -1,0 +1,72 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!--<nav th:fragment="navbar" class="navbar">-->
+<!--    <a th:href="@{/products}">Products</a>-->
+<!--    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/products/new}">New Product</a>-->
+<!--    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/users}">Users</a>-->
+<!--    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/users/new}">New User</a>-->
+<!--    <a sec:authorize="isAnonymous()" th:href="@{/login}">Login</a>-->
+<!--    <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout <span-->
+<!--            sec:authentication="principal.username"></span></a>-->
+
+<!--</nav>-->
+
+<nav class="navbar navbar-expand-lg navbar-light" th:fragment="navbar">
+    <div class="container box_1620">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <!--                <a class="navbar-brand logo_h" href="products.html"><img src="img/logo.png" alt=""></a>-->
+        <a class="navbar-brand logo_h" href="/app/products">MY E-SHOP</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+            <ul class="nav navbar-nav menu_nav justify-content-center">
+                <li th:if="${#httpServletRequest.requestURI} == '/app/products'" class="nav-item active">
+                    <a class="nav-link" href="/app/products">Products</a>
+                </li>
+                <li th:unless="${#httpServletRequest.requestURI} == '/app/products'" class="nav-item">
+                    <a class="nav-link" href="/app/products">Products</a>
+                </li>
+                <li th:if="${#httpServletRequest.requestURI} == '/app/orders'" class="nav-item active">
+                    <a class="nav-link" href="/app/orders">My orders</a>
+                </li>
+                <li th:unless="${#httpServletRequest.requestURI} == '/app/orders'" class="nav-item">
+                    <a class="nav-link" href="/app/orders">My orders</a>
+                </li>
+                <li th:if="${#httpServletRequest.requestURI} == '/app/users/current-user'" class="nav-item active">
+                    <a class="nav-link" href="/app/users/current-user">My profile</a>
+                </li>
+                <li th:unless="${#httpServletRequest.requestURI} == '/app/users/current-user'" class="nav-item">
+                    <a class="nav-link" href="/app/users/current-user">My profile</a>
+                </li>
+                <li th:if="${#httpServletRequest.requestURI} == '/app/orders/cart'" class="nav-item active">
+                    <a class="nav-link" href="/app/orders/cart">Cart</a>
+                </li>
+                <li th:unless="${#httpServletRequest.requestURI} == '/app/orders/cart'" class="nav-item">
+                    <a class="nav-link" href="/app/orders/cart">Cart</a>
+                </li>
+                <!--                        <li class="nav-item submenu dropdown">-->
+                <!--                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"-->
+                <!--                               aria-haspopup="true"-->
+                <!--                               aria-expanded="false">Pages</a>-->
+                <!--                            <ul class="dropdown-menu">-->
+                <!--                                <li class="nav-item"><a class="nav-link" href="blog-details.html">Blog Details</a></li>-->
+                <!--                            </ul>-->
+                <!--                        </li>-->
+<!--                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>-->
+            </ul>
+            <!--                    <ul class="nav navbar-nav navbar-right navbar-social">-->
+            <!--                        <li><a href="#"><i class="ti-facebook"></i></a></li>-->
+            <!--                        <li><a href="#"><i class="ti-twitter-alt"></i></a></li>-->
+            <!--                        <li><a href="#"><i class="ti-instagram"></i></a></li>-->
+            <!--                        <li><a href="#"><i class="ti-skype"></i></a></li>-->
+            <!--                    </ul>-->
+        </div>
+    </div>
+</nav>
+</html>

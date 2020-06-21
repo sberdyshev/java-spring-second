@@ -70,8 +70,20 @@ a {
     padding: 110px 0
 }
 
+.section-padding-small {
+    padding: 10px 0
+}
+
 .section-margin {
     margin: 50px 0
+}
+
+.container-center {
+    text-align: center;
+}
+
+.container-center-2 {
+    display: inline-block;
 }
 
 @media (min-width: 1000px) {

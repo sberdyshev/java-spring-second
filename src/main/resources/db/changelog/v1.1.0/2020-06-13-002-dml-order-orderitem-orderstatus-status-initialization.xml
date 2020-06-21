@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <property name="now" value="now()" dbms="postgresql"/>
+
+    <changeSet id="insert_into_table_ord_status" author="Sergey Berdyshev">
+        <insert tableName="ord_status">
+            <column name="code" value="NEW"/>
+            <column name="description" value="New order"/>
+        </insert>
+        <insert tableName="ord_status">
+            <column name="code" value="ACCEPTED"/>
+            <column name="description" value="Order is accepted"/>
+        </insert>
+        <insert tableName="ord_status">
+            <column name="code" value="IN PROGRESS"/>
+            <column name="description" value="Order is being handled"/>
+        </insert>
+        <insert tableName="ord_status">
+            <column name="code" value="IN DELIVERY"/>
+            <column name="description" value="Handed to the delivery service"/>
+        </insert>
+        <insert tableName="ord_status">
+            <column name="code" value="DELIVERED"/>
+            <column name="description" value="Delivered"/>
+        </insert>
+        <insert tableName="ord_status">
+            <column name="code" value="CANCELED"/>
+            <column name="description" value="Canceled"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert_into_table_ord_order" author="Sergey Berdyshev">
+        <insert tableName="ord_order">
+            <column name="user_id" valueComputed="(SELECT id FROM auth_user WHERE user_name='user1')"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert_into_table_ord_order_item" author="Sergey Berdyshev">
+        <insert tableName="ord_order_item">
+            <column name="product_id" valueComputed="(SELECT id FROM prd_product WHERE name='iphone X')"/>
+            <column name="order_id" valueComputed="(SELECT ord_order.id FROM ord_order, auth_user WHERE ord_order.user_id=auth_user.id and auth_user.user_name = 'user1')"/>
+            <column name="count" value="4"/>
+        </insert>
+        <insert tableName="ord_order_item">
+            <column name="product_id" valueComputed="(SELECT id FROM prd_product WHERE name='galaxy s10')"/>
+            <column name="order_id" valueComputed="(SELECT ord_order.id FROM ord_order, auth_user WHERE ord_order.user_id=auth_user.id and auth_user.user_name = 'user1')"/>
+            <column name="count" value="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert_into_table_order_status" author="Sergey Berdyshev">
+        <insert tableName="ord_order_status">
+            <column name="id" valueComputed="(SELECT ord_order.id FROM ord_order, auth_user WHERE ord_order.user_id=auth_user.id and auth_user.user_name = 'user1')"/>
+            <column name="status_id" valueComputed="(SELECT id FROM ord_status WHERE code='NEW')"/>
+            <column name="time_changed" valueDate="${now}"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

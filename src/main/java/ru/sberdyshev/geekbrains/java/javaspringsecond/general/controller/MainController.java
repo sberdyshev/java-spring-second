@@ -1,19 +1,11 @@
 package ru.sberdyshev.geekbrains.java.javaspringsecond.general.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.RequestContextHolder;
-import ru.sberdyshev.geekbrains.java.javaspringsecond.product.domain.Product;
-import ru.sberdyshev.geekbrains.java.javaspringsecond.product.dto.ProductDto;
+import org.springframework.web.servlet.ModelAndView;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.product.service.ProductService;
 
 @Slf4j
@@ -27,20 +19,26 @@ public class MainController {
     }
 
     @RequestMapping("/")
-    public String getIndexPage(@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
-                               @RequestParam(value = "pageSize", required = false) Integer pageSize,
-                               Model model) {
-        log.debug("Called GET / with args: pageNumber={}, pageSize={}", pageNumber, pageSize);
-        model.addAttribute("page", pageNumber);
-        model.addAttribute("pageSize", pageSize);
-        //todo как по умолчанию инициализировать? Из настроек приложения? private static final переменными?
-        Pageable page = PageRequest.of(0, 5);
-        if (pageNumber != null && pageSize != null) {
-            page = PageRequest.of(pageNumber - 1, pageSize);
-        }
-        //todo сделать маппер domain <-> dto
-        Page<ProductDto> productDtoPage = productService.getAllProductsPageable(page);
-        model.addAttribute("productDtoPage", productDtoPage);
-        return "index";
+    public ModelAndView getRootPage(ModelMap model) {
+        log.info("getRootPage() - Called GET /");
+        log.debug("getRootPage() - args: ModelMap={}", model);
+        log.info("getRootPage() - Redirecting to /products");
+        return new ModelAndView("redirect:/products", model);
+    }
+
+    @RequestMapping("/index")
+    public ModelAndView getIndexPage(ModelMap model) {
+        log.info("getIndexPage() - Called GET /index", model);
+        log.debug("getIndexPage() - args: ModelMap={}", model);
+        log.info("getIndexPage() - Redirecting to /products");
+        return new ModelAndView("redirect:/products", model);
+    }
+
+    @RequestMapping("/index.html")
+    public ModelAndView getIndexHtmlPage(ModelMap model) {
+        log.info("getIndexHtmlPage() - Called GET /index.html", model);
+        log.debug("getIndexHtmlPage() - args: ModelMap={}", model);
+        log.info("getIndexHtmlPage() - Redirecting to /products");
+        return new ModelAndView("redirect:/products", model);
     }
 }

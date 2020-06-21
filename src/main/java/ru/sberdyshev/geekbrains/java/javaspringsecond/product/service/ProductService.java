@@ -12,5 +12,6 @@ public interface ProductService {
 
     Page<ProductDto> getAllProductsPageable(Pageable page);
 
-    Optional<ProductDto> getProductById(UUID id);
+    ProductDto getProduct(UUID productId);
+    ProductDto getProduct(String productName);
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="insert_into_table_prd_product_image" author="Sergey Berdyshev">
+        <insert tableName="prd_product_image">
+            <column name="id" valueComputed="(SELECT id FROM prd_product WHERE name='iphone X')"/>
+            <column name="image_path" value="iphoneX.jpg"/>
+        </insert>
+        <insert tableName="prd_product_image">
+            <column name="id" valueComputed="(SELECT id FROM prd_product WHERE name='galaxy s10')"/>
+            <column name="image_path" value="galaxyS10.jpg"/>
+        </insert>
+        <insert tableName="prd_product_image">
+            <column name="id" valueComputed="(SELECT id FROM prd_product WHERE name='galaxy s20')"/>
+            <column name="image_path" value="galaxyS20.jpg"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <property name="uuid_type" value="uuid" dbms="postgresql"/>
+    <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
+
+    <changeSet id="create_table_ord_order" author="Sergey Berdyshev">
+        <createTable tableName="ord_order">
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true"
+                             nullable="false"/>
+            </column>
+            <column name="user_id" type="${uuid_type}">
+                <constraints nullable="false"
+                             foreignKeyName="fk_ord_order_table_to_auth_user_table"
+                             references="auth_user(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_table_ord_order_item" author="Sergey Berdyshev">
+        <createTable tableName="ord_order_item">
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true"
+                             nullable="false"/>
+            </column>
+            <column name="product_id" type="${uuid_type}">
+                <constraints nullable="false"
+                             foreignKeyName="fk_ord_order_item_table_to_prd_product_table"
+                             references="prd_product(id)"/>
+            </column>
+            <column name="order_id" type="${uuid_type}">
+                <constraints nullable="false"
+                             foreignKeyName="fk_ord_order_item_table_to_ord_order_table"
+                             references="ord_order(id)"/>
+            </column>
+            <column name="count" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_table_ord_status" author="Sergey Berdyshev">
+        <createTable tableName="ord_status">
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true"
+                             nullable="false"/>
+            </column>
+            <column name="code" type="varchar">
+                <constraints unique="true"
+                             nullable="false"/>
+            </column>
+            <column name="description" type="varchar">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create_table_ord_order_status" author="Sergey Berdyshev">
+        <createTable tableName="ord_order_status">
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints primaryKey="true"
+                             nullable="false"
+                             foreignKeyName="fk_ord_order_status_table_to_ord_order_table"
+                             references="ord_order(id)"/>
+            </column>
+            <column name="status_id" type="${uuid_type}">
+                <constraints nullable="false"
+                             foreignKeyName="fk_ord_order_status_table_to_ord_status_table"
+                             references="ord_status(id)"/>
+            </column>
+            <column name="time_changed" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

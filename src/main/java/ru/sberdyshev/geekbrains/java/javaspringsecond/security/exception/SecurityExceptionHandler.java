@@ -13,6 +13,7 @@ public class SecurityExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ErrorDto> usernameNotFoundExceptionHandler(UsernameNotFoundException usernameNotFoundException) {
         //todo ошибка должна не отправлять описание, а редиректить на страницу логина
+        //todo ошибка UsernameNotFoundException, описание ERR_AUTH_USER_AND_PASSWORD_DOES_NOT_MATCH - надо поправить
         log.debug("usernameNotFoundExceptionHandler() - Start handling UsernameNotFoundException. Details: " + usernameNotFoundException);
         ErrorDto errorMessage = new ErrorDto(
                 AuthExceptionCode.ERR_AUTH_USER_AND_PASSWORD_DOES_NOT_MATCH.toString(),

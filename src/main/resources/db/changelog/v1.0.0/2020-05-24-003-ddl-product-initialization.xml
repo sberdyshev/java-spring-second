@@ -9,13 +9,15 @@
     <property name="uuid_type" value="uuid" dbms="postgresql"/>
     <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
 
-    <changeSet id="create_table_product" author="Sergey Berdyshev">
-        <createTable tableName="product">
+    <changeSet id="create_table_prd_product" author="Sergey Berdyshev">
+        <createTable tableName="prd_product">
             <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
-                <constraints primaryKey="true" nullable="false"/>
+                <constraints primaryKey="true"
+                             nullable="false"/>
             </column>
             <column name="name" type="varchar">
-                <constraints unique="true" nullable="false"/>
+                <constraints unique="true"
+                             nullable="false"/>
             </column>
             <column name="manufacturer" type="varchar">
                 <constraints nullable="false"/>

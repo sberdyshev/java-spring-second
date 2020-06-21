@@ -1,5 +1,7 @@
 package ru.sberdyshev.geekbrains.java.javaspringsecond.product.dto;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,14 +45,17 @@ public class ProductDto {
     @Digits(integer = 15, fraction = 2, message = "The \"price\" field has incorrect format")
     private BigDecimal price;
 
+    @NotNull
+    private ProductImageDto productImage;
+
     @Override
     public String toString() {
-        return "ProductDto{" +
-                "id='" + id + '\'' + ", " +
-                "name='" + name + '\'' + ", " +
-                "manufacturer='" + manufacturer + '\'' + ", " +
-                "shortDescription='" + shortDescription + '\'' + ", " +
-                "fullDescription='" + fullDescription + '\'' + ", " +
-                "price=" + price + '}';
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String objectAsJson = mapper.writeValueAsString(this);
+            return objectAsJson;
+        } catch (JsonProcessingException jsonProcessingException) {
+            return this.getClass().getName();
+        }
     }
 }

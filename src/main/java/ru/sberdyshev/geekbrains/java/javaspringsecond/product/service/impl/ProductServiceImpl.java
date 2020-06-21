@@ -1,5 +1,6 @@
 package ru.sberdyshev.geekbrains.java.javaspringsecond.product.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -21,18 +22,20 @@ import java.util.UUID;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
 
-    @Autowired
-    public ProductServiceImpl(ProductRepository productRepository,
-                              ModelMapper modelMapper) {
-        this.productRepository = productRepository;
-        this.modelMapper = modelMapper;
-    }
+//    @Autowired
+//    public ProductServiceImpl(ProductRepository productRepository,
+//                              ModelMapper modelMapper) {
+//        this.productRepository = productRepository;
+//        this.modelMapper = modelMapper;
+//    }
 
+    //todo chage mapping
     @Override
     public Page<ProductDto> getAllProductsPageable(Pageable page) {
         log.debug("getAllProducts() - Start with args: page={}", page);
@@ -47,15 +50,28 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<ProductDto> getProductById(UUID id) {
-        log.debug("getProduct() - Start with args: id={}", id);
-        Optional<Product> optionalProduct = productRepository.findById(id);
+    public ProductDto getProduct(UUID productId) {
+        log.debug("getProduct() - Start with args: productId={}", productId);
+        Optional<Product> optionalProduct = productRepository.findById(productId);
         if (!optionalProduct.isPresent()) {
-            log.warn("getProduct() - Product with id={} not found", id);
-            throw new ProductNotFountException("Product with id=" + id + " is not found");
+            log.warn("getProduct() - Product with id={} not found", productId);
+            throw new ProductNotFountException("Product with id=" + productId + " is not found");
         }
-        Optional<ProductDto> optionalProductDto = Optional.ofNullable(modelMapper.map(optionalProduct.get(), ProductDto.class));
-        log.debug("getProduct() - Return value: Optional<ProductDto>={}", optionalProductDto);
-        return optionalProductDto;
+        ProductDto productDto = modelMapper.map(optionalProduct.get(), ProductDto.class);
+        log.debug("getProduct() - Return value: ProductDto={}", productDto);
+        return productDto;
+    }
+
+    @Override
+    public ProductDto getProduct(String productName) {
+        log.debug("getProduct() - Start with args: productName={}", productName);
+        Optional<Product> optionalProduct = productRepository.findByName(productName);
+        if (!optionalProduct.isPresent()) {
+            log.warn("getProduct() - Product with name={} not found", productName);
+            throw new ProductNotFountException("Product with name=" + productName + " is not found");
+        }
+        ProductDto productDto = modelMapper.map(optionalProduct.get(), ProductDto.class);
+        log.debug("getProduct() - Return value: ProductDto={}", productDto);
+        return productDto;
     }
 }

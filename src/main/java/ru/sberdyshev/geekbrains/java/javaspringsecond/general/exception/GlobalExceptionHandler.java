@@ -13,13 +13,15 @@ import javax.validation.ValidationException;
 public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<ErrorDto> validationExceptionHandler(ValidationException validationException) {
-        log.debug("validationExceptionHandler() - Start handling ValidationException. Details: " + validationException);
+        log.info("validationExceptionHandler() - Start handling ValidationException");
+        log.debug("validationExceptionHandler() - Details of ValidationException={}", validationException);
         ErrorDto errorMessage = new ErrorDto(
                 GlobalEceptionCode.ERR_VALIDATION.toString(),
                 GlobalEceptionCode.ERR_VALIDATION.getDescription() + ". Details: " + validationException.getMessage(),
                 validationException.getCause(),
                 validationException.getStackTrace());
-        log.debug("validationExceptionHandler() - Finished handling ValidationException. Result ErrorDto={}", errorMessage);
+        log.info("validationExceptionHandler() - Finished handling ValidationException");
+        log.debug("validationExceptionHandler() - Result ErrorDto={}", errorMessage);
         return new ResponseEntity<>(errorMessage, GlobalEceptionCode.ERR_VALIDATION.getHttpStatus());
     }
 }
