@@ -2,6 +2,7 @@ package ru.sberdyshev.geekbrains.java.javaspringsecond.order.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import ru.sberdyshev.geekbrains.java.javaspringsecond.order.domain.ShoppingCart;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.order.dto.OrderDto;
 
 import java.util.UUID;
@@ -13,4 +14,5 @@ public interface OrderService {
 
     Page<OrderDto> getOrders(Pageable pageable);
 
+    OrderDto saveCart(ShoppingCart shoppingCart);
 }

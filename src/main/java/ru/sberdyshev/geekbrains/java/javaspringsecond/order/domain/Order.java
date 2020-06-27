@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.sberdyshev.geekbrains.java.javaspringsecond.general.config.ObjectJsonPrinterConfig;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.user.domain.User;
 
 import javax.persistence.*;
@@ -34,18 +33,38 @@ public class Order {
     private User user;
 
     //todo проверить
-    @OneToMany(fetch = FetchType.LAZY,
+    @OneToMany(mappedBy = "order",
+            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    @JoinColumn(name="order_id")
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            optional = false,
-            orphanRemoval = true)
-    @PrimaryKeyJoinColumn
+    @OneToOne(mappedBy = "order",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     private OrderStatus orderStatus;
+
+    public void addOrderItem(OrderItem orderItem) {
+        orderItems.add(orderItem);
+        orderItem.setOrder(this);
+    }
+
+    public void removeOrderItem(OrderItem orderItem) {
+        orderItems.remove(orderItem);
+        orderItem.setOrder(null);
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        for (OrderItem orderItem : orderItems) {
+            addOrderItem(orderItem);
+        }
+    }
+
+    public void removeOrderItems(List<OrderItem> orderItems) {
+        for (OrderItem orderItem : orderItems) {
+            removeOrderItem(orderItem);
+        }
+    }
 
     @Override
     public String toString() {

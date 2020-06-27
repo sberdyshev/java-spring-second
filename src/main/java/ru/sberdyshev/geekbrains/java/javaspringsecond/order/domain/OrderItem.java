@@ -46,4 +46,16 @@ public class OrderItem {
             return this.getClass().getName();
         }
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof OrderItem )) return false;
+        return id != null && id.equals(((OrderItem) object).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
 }

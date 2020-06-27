@@ -44,11 +44,11 @@
                 <li th:unless="${#httpServletRequest.requestURI} == '/app/users/current-user'" class="nav-item">
                     <a class="nav-link" href="/app/users/current-user">My profile</a>
                 </li>
-                <li th:if="${#httpServletRequest.requestURI} == '/app/orders/cart'" class="nav-item active">
-                    <a class="nav-link" href="/app/orders/cart">Cart</a>
+                <li th:if="${#httpServletRequest.requestURI} == '/app/cart'" class="nav-item active">
+                    <a class="nav-link" href="/app/cart">Cart</a>
                 </li>
-                <li th:unless="${#httpServletRequest.requestURI} == '/app/orders/cart'" class="nav-item">
-                    <a class="nav-link" href="/app/orders/cart">Cart</a>
+                <li th:unless="${#httpServletRequest.requestURI} == '/app/cart'" class="nav-item">
+                    <a class="nav-link" href="/app/cart">Cart</a>
                 </li>
                 <!--                        <li class="nav-item submenu dropdown">-->
                 <!--                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"-->

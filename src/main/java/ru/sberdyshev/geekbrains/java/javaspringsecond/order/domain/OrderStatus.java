@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.sberdyshev.geekbrains.java.javaspringsecond.general.config.ObjectJsonPrinterConfig;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -22,19 +21,35 @@ import java.util.UUID;
 public class OrderStatus {
 
     @Id
-    @GeneratedValue
     @Column(name = "ID", unique = true)
+//    @GeneratedValue
+//    @GeneratedValue(generator="foreign")
+//    @GenericGenerator(name="foreign", strategy = "foreign", parameters={
+//            @Parameter(name="property", value="order")
+//    })
     private UUID id;
 
-    //    @OneToOne(fetch = FetchType.EAGER)
-//    @OneToOne(mappedBy = "status", cascade = CascadeType.ALL,
-//            fetch = FetchType.LAZY, optional = false)
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "status_id")
     private Status statusData;
 
     @Column(name = "time_changed")
     private Date timeChanged;
+
+//    @OneToOne(cascade = CascadeType.ALL,
+//            fetch = FetchType.LAZY,
+//            optional = false,
+//            orphanRemoval = true)
+//    @PrimaryKeyJoinColumn
+
+    @OneToOne(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            optional = false,
+            orphanRemoval = true)
+    @MapsId
+    @JoinColumn(name = "id",
+            foreignKey = @ForeignKey(name = "fk_ord_order_status_table_to_ord_order_table"))
+    private Order order;
 
     @Override
     public String toString() {

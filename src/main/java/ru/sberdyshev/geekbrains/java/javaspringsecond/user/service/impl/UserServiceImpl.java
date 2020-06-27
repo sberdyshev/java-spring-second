@@ -50,6 +50,7 @@ public class UserServiceImpl implements UserService {
         return userDetails;
     }
 
+    @Override
     @Transactional(readOnly = true)
     public UserDto getUser(String userName) {
         log.debug("getUser() - Start with args: userName={}", userName);
@@ -65,6 +66,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDto getUser(UUID userId) {
         log.debug("getUser() - Start with args: userId={}", userId);
         Optional<User> optionalUser = userRepository.findById(userId);
@@ -79,6 +81,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDto getCurrentUser() {
         log.debug("getCurrentUser() - Start");
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();

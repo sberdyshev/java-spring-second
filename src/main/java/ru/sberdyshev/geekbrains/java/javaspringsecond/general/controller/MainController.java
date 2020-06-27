@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.product.service.ProductService;
 
+//todo change request mapping на get\post mapping
 @Slf4j
 @Controller
 public class MainController {

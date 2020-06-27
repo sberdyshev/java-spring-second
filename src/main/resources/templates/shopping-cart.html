@@ -20,55 +20,138 @@
 <!--================Header Menu Area =================-->
 <header class="header_area">
     <div class="main_menu">
+        <!--        <nav class="navbar navbar-expand-lg navbar-light">-->
+        <!--            <div class="container box_1620">               -->
+        <!--                <a class="navbar-brand logo_h" href="../products">MY E-SHOP</a>-->
+        <!--                <button class="navbar-toggler" type="button" data-toggle="collapse"-->
+        <!--                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"-->
+        <!--                        aria-expanded="false" aria-label="Toggle navigation">-->
+        <!--                    <span class="icon-bar"></span>-->
+        <!--                    <span class="icon-bar"></span>-->
+        <!--                    <span class="icon-bar"></span>-->
+        <!--                </button>-->
+        <!--                <div class="collapse navbar-collapse offset" id="navbarSupportedContent">-->
+        <!--                    <ul class="nav navbar-nav menu_nav justify-content-center">-->
+        <!--                        <li class="nav-item"><a class="nav-link" href="../products">Products</a></li>-->
+        <!--                        <li class="nav-item"><a class="nav-link" href="../orders">My orders</a></li>-->
+        <!--                        <li class="nav-item"><a class="nav-link" href="../users/current-user">My profile</a>-->
+        <!--                        <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>-->
+        <!--                    </ul>-->
+        <!--                    -->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </nav>-->
         <nav th:replace="fragments/navbar.html :: navbar"/>
     </div>
 </header>
 <!--================Header Menu Area =================-->
 
+<!--<table class="table">-->
+<!--    <thead>-->
+<!--    <tr class="thead-dark">-->
+<!--        <td>Order ID</td>-->
+<!--        <td>Order status</td>-->
+<!--        <td>Last updated</td>-->
+<!--    </tr>-->
+<!--    </thead>-->
+
+<!--    <tr class="myTableRow responsive-row" th:if="${orderDtoPage.hasContent()}"-->
+<!--        th:each="orderDto : ${orderDtoPage.content}">-->
+<!--        <td th:text="${orderDto.id}"/>-->
+<!--        <td th:text="${orderDto.orderStatus.statusData.description}"/>-->
+<!--        <td th:text="${orderDto.orderStatus.timeChanged}"/>-->
+<!--    </tr>-->
+
+<!--    <tr class="myTableRow responsive-row" th:unless="${orderDtoPage.hasContent()}">-->
+<!--        <td colspan="3">No data</td>-->
+<!--    </tr>-->
+<!--</table>-->
+
 
 <main class="site-main">
-    <!--================Hero Banner start =================-->
     <section class="mb-30px">
         <div class="container">
+            <div>
+                <p class="navbar-brand logo_h">Cart:</p>
+            </div>
             <table class="table">
                 <thead class="thead-dark">
                 <tr>
-                    <th>Product Name</th>
-                    <th>Image</th>
-                    <th>Manufacturer</th>
-                    <th>Description</th>
+                    <th>Item name</th>
+                    <th>Item image</th>
+                    <th>Item short description</th>
                     <th>Price</th>
-                    <th></th>
+                    <th>Count</th>
+                    <th/>
+                    <th/>
+                    <th/>
                 </tr>
                 </thead>
 
                 <tr class="myTableRow responsive-row"
-                    th:if="${productDtoPage.hasContent()}"
-                    th:each="productDto : ${productDtoPage.content}">
-                    <!--                    <td th:text="${productDto.name}"/>-->
-                    <td><a th:href="@{/products/product/name/{product-name}(product-name=${productDto.name})}"
-                           th:text="${productDto.name}"/></td>
+                    th:unless="${shoppingCartDto.orderItems.isEmpty()}"
+                    th:each="orderItem : ${shoppingCartDto.orderItems}">
+                    <td><a th:href="@{/products/product/name/{product-name}(product-name=${orderItem.product.name})}"
+                           th:text="${orderItem.product.name}"/></td>
                     <td>
-                        <img th:unless="${productDto.productImage?.imagePath.isEmpty() or productDto.productImage.isNotAvailageImage()}" width="40" height="40" th:src="@{'/img/products/' + ${productDto.productImage.imagePath}}" />
-                        <img th:if="${productDto.productImage?.imagePath.isEmpty() or productDto.productImage.isNotAvailageImage()}" width="40" height="40" th:src="@{'/img/products/NotFound.jpg'}" />
+                        <img th:unless="${orderItem.product.productImage?.imagePath.isEmpty() or orderItem.product.productImage.isNotAvailageImage()}"
+                             width="40" height="40"
+                             th:src="@{'/img/products/' + ${orderItem.product.productImage.imagePath}}"/>
+                        <img th:if="${orderItem.product.productImage?.imagePath.isEmpty() or orderItem.product.productImage.isNotAvailageImage()}"
+                             width="40" height="40" th:src="@{'/img/products/NotFound.jpg'}"/>
                     </td>
-                    <td th:text="${productDto.manufacturer}"/>
-                    <td th:text="${productDto.shortDescription}"/>
-                    <td th:text="${productDto.price}"/>
+                    <td th:text="${orderItem.product.shortDescription}"/>
+                    <td th:text="${orderItem.product.price}"/>
+                    <td th:text="${orderItem.count}"/>
                     <td>
-<!--                        <a th:href="@{'/orders/cart/product/add/' + ${productDto.id}}" class="button">Добавить в корзину</a>-->
-                        <form method="POST" th:action="@{'/cart/product/add/' + ${productDto.id}}">
-                            <button type="submit" name="Add to cart" value="value" class="button">Add to cart</button>
+                        <form method="POST" th:action="@{'/cart/product/add/' + ${orderItem.product.id}}">
+                            <button type="submit" name="+" value="value" class="button">+</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" th:action="@{'/cart/product/subtract/' + ${orderItem.product.id}}">
+                            <button type="submit" name="-" value="value" class="button">-</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" th:action="@{'/cart/product/delete/' + ${orderItem.product.id}}">
+                            <button type="submit" name="Delete" value="value" class="button">Delete</button>
                         </form>
                     </td>
                 </tr>
-
-                <tr class="myTableRow responsive-row" th:unless="${productDtoPage.hasContent()}">
-                    <td colspan="4">No data</td>
+                <tr class="myTableRow responsive-row"
+                    th:unless="${shoppingCartDto.orderItems.isEmpty()}">
+                    <td colspan="8" th:text="'Total cost: ' + ${shoppingCartDto.totalCost}"></td>
+                </tr>
+                <tr class="myTableRow responsive-row"
+                    th:unless="${shoppingCartDto.orderItems.isEmpty()}">
+                    <td colspan="8">
+                        <form method="POST" th:action="@{'/orders/confirm'}">
+                            <button type="submit" name="Make an order" value="value" class="button">Make an order
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <tr class="myTableRow responsive-row" th:if="${shoppingCartDto.orderItems.isEmpty()}">
+                    <td colspan="8">No data</td>
                 </tr>
             </table>
         </div>
     </section>
+
+
+    <!--================Hero Banner start =================-->
+    <!--    <section class="mb-30px">-->
+    <!--        <div class="container">-->
+    <!--            <div class="hero-banner">-->
+    <!--                <div class="hero-banner__content">-->
+    <!--                    <h3>Tours & Travels</h3>-->
+    <!--                    <h1>Amazing Places on earth</h1>-->
+    <!--                    <h4>December 12, 2018</h4>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </section>-->
     <!--================Hero Banner end =================-->
 
     <!--================ Blog slider start =================-->
@@ -409,7 +492,7 @@
 </main>
 
 <!--================ Start Footer Area =================-->
-<!--<footer class="footer-area section-padding">-->
+<!--<footer class="footer-area section-padding-small">-->
 <!--    <div class="container">-->
 <!--        <div class="row">-->
 <!--            <div class="col-lg-3  col-md-6 col-sm-6">-->
@@ -503,11 +586,11 @@
 <!--</footer>-->
 <!--================ End Footer Area =================-->
 
-<script src="vendors/jquery/jquery-3.2.1.min.js"></script>
-<script src="vendors/bootstrap/bootstrap.bundle.min.js"></script>
-<script src="vendors/owl-carousel/owl.carousel.min.js"></script>
-<script src="js/jquery.ajaxchimp.min.js"></script>
-<script src="js/mail-script.js"></script>
-<script src="js/main.js"></script>
+<script src="../vendors/jquery/jquery-3.2.1.min.js"></script>
+<script src="../vendors/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="../vendors/owl-carousel/owl.carousel.min.js"></script>
+<script src="../js/jquery.ajaxchimp.min.js"></script>
+<script src="../js/mail-script.js"></script>
+<script src="../js/main.js"></script>
 </body>
 </html>

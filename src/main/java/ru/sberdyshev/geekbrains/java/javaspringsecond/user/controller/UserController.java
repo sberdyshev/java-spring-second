@@ -11,6 +11,7 @@ import ru.sberdyshev.geekbrains.java.javaspringsecond.user.service.UserService;
 
 import java.util.UUID;
 
+//todo change request mapping на get\post mapping
 @Slf4j
 @Controller
 public class UserController {

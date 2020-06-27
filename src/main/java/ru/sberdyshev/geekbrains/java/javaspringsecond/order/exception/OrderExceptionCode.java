@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum OrderExceptionCode {
-    ERR_ORDER_NOT_FOUND("Заказ не найден.", HttpStatus.NOT_FOUND);
+    ERR_ORDER_NOT_FOUND("Заказ не найден.", HttpStatus.NOT_FOUND),
+    ERR_STATUS_NOT_FOUND("Статус не найден.", HttpStatus.NOT_FOUND);
 
     private String description;
     private HttpStatus httpStatus;

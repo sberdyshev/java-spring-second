@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.product.dto.ProductDto;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.product.service.ProductService;
-
+//todo change request mapping на get\post mapping
 @Slf4j
 @Controller
 public class ProductController {
