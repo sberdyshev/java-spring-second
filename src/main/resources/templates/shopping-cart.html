@@ -103,19 +103,19 @@
                     <td th:text="${orderItem.product.shortDescription}"/>
                     <td th:text="${orderItem.product.price}"/>
                     <td th:text="${orderItem.count}"/>
-                    <td>
+                    <td class="td-with-button">
                         <form method="POST" th:action="@{'/cart/product/add/' + ${orderItem.product.id}}">
-                            <button type="submit" name="+" value="value" class="button">+</button>
+                            <button type="submit" name="+" value="value" class="very-small-button">+</button>
                         </form>
                     </td>
-                    <td>
+                    <td class="td-with-button">
                         <form method="POST" th:action="@{'/cart/product/subtract/' + ${orderItem.product.id}}">
-                            <button type="submit" name="-" value="value" class="button">-</button>
+                            <button type="submit" name="-" value="value" class="very-small-button">-</button>
                         </form>
                     </td>
-                    <td>
+                    <td class="td-with-button">
                         <form method="POST" th:action="@{'/cart/product/delete/' + ${orderItem.product.id}}">
-                            <button type="submit" name="Delete" value="value" class="button">Delete</button>
+                            <button type="submit" name="Delete" value="value" class="very-small-button">Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -133,7 +133,7 @@
                     </td>
                 </tr>
                 <tr class="myTableRow responsive-row" th:if="${shoppingCartDto.orderItems.isEmpty()}">
-                    <td colspan="8">No data</td>
+                    <td colspan="8">Cart is empty</td>
                 </tr>
             </table>
         </div>

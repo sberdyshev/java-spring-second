@@ -5,16 +5,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.sberdyshev.geekbrains.java.javaspringsecond.order.domain.OrderItem;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.order.dto.OrderDto;
+import ru.sberdyshev.geekbrains.java.javaspringsecond.order.dto.OrderItemDto;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.order.service.OrderService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.UUID;
 //todo change request mapping на get\post mapping
 @Slf4j
@@ -42,6 +46,8 @@ public class OrderController {
         }
         Page<OrderDto> orderDtoPage = orderService.getOrders(page);
         model.addAttribute("orderDtoPage", orderDtoPage);
+        model.addAttribute("pageNumber", pageNumber);
+        model.addAttribute("pageSize", pageSize);
         log.info("getAllOrdersPage() - Finished GET /orders");
         log.debug("getAllOrdersPage() - Return value: orderDtoPage={}, model={}", orderDtoPage, model);
         return "orders";
@@ -53,8 +59,15 @@ public class OrderController {
         log.info("getOneOrderById() - Called GET /orders/{order-id}");
         log.debug("getOneOrderById() - args: orderId={}", orderId);
         OrderDto orderDto = orderService.getOrder(orderId);
+        BigDecimal totalCost = new BigDecimal("0.00").setScale(2, BigDecimal.ROUND_HALF_UP);
+        for (OrderItemDto orderItemDto : orderDto.getOrderItems()) {
+            BigDecimal orderItemDtoProductCount = new BigDecimal(orderItemDto.getCount());
+            BigDecimal productPrice = orderItemDto.getProduct().getPrice();
+            BigDecimal orderItemDtoCost = productPrice.multiply(orderItemDtoProductCount);
+            totalCost = totalCost.add(orderItemDtoCost);
+        }
         model.addAttribute("orderDto", orderDto);
-        model.addAttribute("test", "1");
+        model.addAttribute("totalCost", totalCost);
         log.info("getOneOrderById() - Finished GET /orders/{order-id}");
         log.debug("getOneOrderById() - Return value: orderDto={}, model={}", orderDto, model);
         return "order-details";

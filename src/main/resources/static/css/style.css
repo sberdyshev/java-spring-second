@@ -22,7 +22,16 @@ button {
     cursor: pointer
 }
 
+very-small-button {
+    cursor: pointer
+}
+
 button:focus {
+    outline: 0;
+    box-shadow: none
+}
+
+very-small-button:focus {
     outline: 0;
     box-shadow: none
 }
@@ -2362,6 +2371,18 @@ a {
     transition: all .4s ease
 }
 
+.very-small-button {
+    display: inline-block;
+    border: 1px solid #222;
+    text-transform: uppercase;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 5px 12px;
+    background-color: #222;
+    color: #ff9907;
+    transition: all .4s ease
+}
+
 .button i, .button span {
     margin-left: 5px
 }
@@ -2370,12 +2391,29 @@ a {
     .button {
         padding: 12px 42px
     }
+    .very-small-button {
+        padding: 6px 24px
+    }
 }
 
 .button:hover {
     background-color: #ff9907;
     border-color: #ff9907;
     color: #000022
+}
+
+.very-small-button:hover {
+    background-color: #ff9907;
+    border-color: #ff9907;
+    color: #000022
+}
+
+.td-with-button {
+    text-align: right;
+}
+
+.td-center {
+    text-align: center;
 }
 
 .form-contact .form-group {

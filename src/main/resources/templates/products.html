@@ -55,10 +55,10 @@
                     <td th:text="${productDto.manufacturer}"/>
                     <td th:text="${productDto.shortDescription}"/>
                     <td th:text="${productDto.price}"/>
-                    <td>
+                    <td class="td-with-button">
 <!--                        <a th:href="@{'/orders/cart/product/add/' + ${productDto.id}}" class="button">Добавить в корзину</a>-->
                         <form method="POST" th:action="@{'/cart/product/add/' + ${productDto.id}}">
-                            <button type="submit" name="Add to cart" value="value" class="button">Add to cart</button>
+                            <button type="submit" name="Add to cart" value="value" class="very-small-button">Add to cart</button>
                         </form>
                     </td>
                 </tr>
@@ -67,6 +67,16 @@
                     <td colspan="4">No data</td>
                 </tr>
             </table>
+
+            <div th:if="${productDtoPage.hasContent()}" class="pagination">
+                    <a th:href="@{/products(pageNumber=${1}, pageSize=${productDtoPage.size})}" class="very-small-button">&laquo;</a>
+
+                <a th:each="num: ${#numbers.sequence(1, productDtoPage.totalPages)}"
+                   th:classappend="${num == productDtoPage.number + 1} ? 'active'"
+                   th:href="@{/products(pageNumber=${num}, pageSize=${productDtoPage.size})}" class="very-small-button">[[${num}]]</a>
+
+                <a th:href="@{/products(pageNumber=${productDtoPage.totalPages}, pageSize=${productDtoPage.size})}" class="very-small-button">&raquo;</a>
+            </div>
         </div>
     </section>
     <!--================Hero Banner end =================-->

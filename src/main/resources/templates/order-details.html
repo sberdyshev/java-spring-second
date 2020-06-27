@@ -103,8 +103,13 @@
                     <td th:text="${orderItem.count}"/>
                 </tr>
 
+                <tr class="myTableRow responsive-row"
+                    th:unless="${orderDto.orderItems.isEmpty()}">
+                    <td colspan="5" th:text="'Total cost: ' + ${totalCost}"></td>
+                </tr>
+
                 <tr class="myTableRow responsive-row" th:if="${orderDto.orderItems.isEmpty()}">
-                    <td colspan="4">No data</td>
+                    <td colspan="5">No data</td>
                 </tr>
             </table>
         </div>

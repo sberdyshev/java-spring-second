@@ -111,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
         Type listOrderDtoType = new TypeToken<List<OrderDto>>() {
         }.getType();
         List<OrderDto> orderDtoList = modelMapper.map(orderList, listOrderDtoType);
-        Page<OrderDto> orderDtoPage = new PageImpl<>(orderDtoList);
+        Page<OrderDto> orderDtoPage = new PageImpl<>(orderDtoList, orderPage.getPageable(), orderPage.getTotalElements());
         log.debug("getOrders() - Return value: Page<OrderDto>={} (List of values List<OrderDto>={})", orderDtoPage, orderDtoList);
         return orderDtoPage;
     }

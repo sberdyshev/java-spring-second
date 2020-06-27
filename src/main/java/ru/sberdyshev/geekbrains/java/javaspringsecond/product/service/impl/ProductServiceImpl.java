@@ -46,7 +46,7 @@ public class ProductServiceImpl implements ProductService {
         Type listProductDtoType = new TypeToken<List<ProductDto>>() {
         }.getType();
         List<ProductDto> productDtoList = modelMapper.map(productList, listProductDtoType);
-        Page<ProductDto> productDtoPage = new PageImpl<>(productDtoList);
+        Page<ProductDto> productDtoPage = new PageImpl<>(productDtoList, productPage.getPageable(), productPage.getTotalElements());
         log.debug("getAllProducts() - Return value: Page<ProductDto>={}", productDtoPage);
         return productDtoPage;
     }

@@ -28,7 +28,7 @@ public class ProductController {
                                      @RequestParam(value = "pageSize", required = false) Integer pageSize,
                                      Model model) {
         log.debug("Called GET /products with args: pageNumber={}, pageSize={}", pageNumber, pageSize);
-        model.addAttribute("page", pageNumber);
+        model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("pageSize", pageSize);
         Pageable page = PageRequest.of(0, 5);
         if (pageNumber != null && pageSize != null) {

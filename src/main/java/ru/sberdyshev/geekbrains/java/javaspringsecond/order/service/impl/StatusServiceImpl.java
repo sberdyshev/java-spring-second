@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.order.domain.Status;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.order.dto.StatusDto;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.order.exception.OrderExceptionCode;
@@ -16,6 +16,7 @@ import ru.sberdyshev.geekbrains.java.javaspringsecond.order.repository.StatusRep
 import ru.sberdyshev.geekbrains.java.javaspringsecond.order.service.StatusService;
 
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -35,20 +36,14 @@ public class StatusServiceImpl implements StatusService {
     public Page<StatusDto> getAllStatuses(Pageable pageable) {
         log.debug("getAllStatuses() - Start with args: Pageable={}", pageable);
         Page<Status> statusPage = statusRepository.findAll(pageable);
-        Type pageStatusDtoType = new TypeToken<Page<StatusDto>>() {
+        List<Status> statusList = statusPage.getContent();
+        Type listStatusDtoType = new TypeToken<List<StatusDto>>() {
         }.getType();
-        Page<StatusDto> statusDtoPageWithDefaultType = null;
-        statusDtoPageWithDefaultType = modelMapper.map(statusPage, statusDtoPageWithDefaultType.getClass());
-        Page<StatusDto> statusDtoPageWithCalculatedType = modelMapper.map(statusPage, pageStatusDtoType);
-//        List<Order> orderList = orderPage.getContent();
-//        Type listOrderDtoType = new TypeToken<List<OrderDto>>() {
-//        }.getType();
-//        List<OrderDto> orderDtoList = modelMapper.map(orderList, listOrderDtoType);
-//        Page<OrderDto> orderDtoPage = new PageImpl<>(orderDtoList);
-        log.debug("getAllStatuses() - statusDtoPageWithDefaultType={}", statusDtoPageWithDefaultType);
-        log.debug("getAllStatuses() - statusDtoPageWithCalculatedType={}", statusDtoPageWithCalculatedType);
-        //log.debug("getOrders() - Return value: Page<OrderDto>={} (List of values List<OrderDto>={})", orderDtoPage, orderDtoList);
-        return statusDtoPageWithCalculatedType;
+        List<StatusDto> statusDtoList = modelMapper.map(statusList, listStatusDtoType);
+        Page<StatusDto> statusDtoPage = new PageImpl<>(statusDtoList, statusPage.getPageable(), statusPage.getTotalElements());
+        log.debug("getAllStatuses() - Finished");
+        log.debug("getAllStatuses() - Return value: Page<StatusDto>={} (List of values List<OrderDto>={})", statusDtoPage, statusDtoList);
+        return statusDtoPage;
     }
 
     @Override

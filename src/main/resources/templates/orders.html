@@ -59,7 +59,8 @@
                 </tr>
                 </thead>
 
-                <tr class="myTableRow responsive-row" th:if="${orderDtoPage.hasContent()}"
+                <tr class="myTableRow responsive-row"
+                    th:if="${orderDtoPage.hasContent()}"
                     th:each="orderDto : ${orderDtoPage.content}">
                     <td><a th:href="@{/orders/{id}(id=${orderDto.id})}" th:text="${orderDto.id}">id</a></td>
                     <!--                    <td th:text="${orderDto.id}"/>-->
@@ -71,6 +72,16 @@
                     <td colspan="3">No data</td>
                 </tr>
             </table>
+
+            <div th:if="${orderDtoPage.hasContent()}" class="pagination">
+                <a th:href="@{/orders(pageNumber=${1}, pageSize=${orderDtoPage.size})}" class="very-small-button">&laquo;</a>
+
+                <a th:each="num: ${#numbers.sequence(1, orderDtoPage.totalPages)}"
+                   th:classappend="${num == orderDtoPage.number + 1} ? 'active'"
+                   th:href="@{/orders(pageNumber=${num}, pageSize=${orderDtoPage.size})}" class="very-small-button">[[${num}]]</a>
+
+                <a th:href="@{/orders(pageNumber=${orderDtoPage.totalPages}, pageSize=${orderDtoPage.size})}" class="very-small-button">&raquo;</a>
+            </div>
         </div>
     </section>
 
