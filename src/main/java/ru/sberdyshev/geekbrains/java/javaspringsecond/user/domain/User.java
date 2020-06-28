@@ -7,8 +7,10 @@ import lombok.Setter;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.general.config.ObjectJsonPrinterConfig;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
+import java.util.concurrent.ArrayBlockingQueue;
 
 @Getter
 @Setter
@@ -75,5 +77,12 @@ public class User {
         } catch (JsonProcessingException jsonProcessingException) {
             return this.getClass().getName();
         }
+    }
+
+    public void addRole(Role role) {
+        if (roles == null) {
+            roles = new ArrayList<>();
+        }
+        roles.add(role);
     }
 }

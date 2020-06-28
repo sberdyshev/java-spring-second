@@ -27,10 +27,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
     }
 
-    @Bean
-    PasswordEncoder getEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    PasswordEncoder getEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 
     @Bean
     public DaoAuthenticationProvider getAuthenticationProvider(UserDetailsService userDetailsService,

@@ -36,6 +36,10 @@ public class UserDto {
     @NotNull
     @Length(max = 255, message = "The \"lastName\" field should be less than 255 characters")
     private String lastName;
+
+    @Length(max = 255, message = "The \"matchingPassword\" field should be less than 255 characters")
+    private String matchingPassword;
+
     private Collection<Role> roles;
 
     @Override

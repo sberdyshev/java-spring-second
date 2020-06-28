@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.user.dto.UserDto;
@@ -31,6 +32,7 @@ public class UserController {
         return "user-details";
     }
 
+    //todo поменять везде маппинги
     @RequestMapping("/users/current-user")
     public String getOneUser(Model model) {
         log.debug("Called GET /users/current-user");
@@ -38,4 +40,5 @@ public class UserController {
         model.addAttribute("userDto", userDto);
         return "user-details";
     }
+
 }

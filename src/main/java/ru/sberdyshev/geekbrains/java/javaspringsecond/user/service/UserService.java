@@ -4,6 +4,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.user.dto.UserDto;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService extends UserDetailsService {
@@ -14,4 +15,6 @@ public interface UserService extends UserDetailsService {
     UserDto getUser(UUID userId);
 
     UserDto getCurrentUser();
+
+    UserDto registerUser(Optional<UserDto> userDto);
 }

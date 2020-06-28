@@ -5,21 +5,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.sberdyshev.geekbrains.java.javaspringsecond.order.domain.OrderItem;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.order.dto.OrderDto;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.order.dto.OrderItemDto;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.order.service.OrderService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.UUID;
+
 //todo change request mapping на get\post mapping
 @Slf4j
 @Controller
@@ -72,6 +69,4 @@ public class OrderController {
         log.debug("getOneOrderById() - Return value: orderDto={}, model={}", orderDto, model);
         return "order-details";
     }
-
-
 }

@@ -3,16 +3,19 @@ package ru.sberdyshev.geekbrains.java.javaspringsecond.user.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.user.domain.Role;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.user.domain.User;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.user.dto.UserDto;
+import ru.sberdyshev.geekbrains.java.javaspringsecond.user.repository.RoleRepository;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.user.repository.UserRepository;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.user.service.UserService;
 
@@ -26,9 +29,9 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    //    private final RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
     private final ModelMapper modelMapper;
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
@@ -95,5 +98,41 @@ public class UserServiceImpl implements UserService {
         UserDto userDto = modelMapper.map(user, UserDto.class);
         log.debug("getCurrentUser() - Return value: UserDto={}", userDto);
         return userDto;
+    }
+
+    @Override
+    public UserDto registerUser(Optional<UserDto> optionalUserDto) {
+        log.info("registerUser() - Start");
+        log.debug("registerUser() - args: Optional<UserDto>={}", optionalUserDto);
+        if (!optionalUserDto.isPresent()) {
+            log.warn("registerUser() - optionalUserDto is empty");
+            //todo throw exception
+        }
+        UserDto userDto = optionalUserDto.get();
+        log.debug("registerUser() - args: UserDto={}", userDto);
+        if (!userDto.getPassword().equals(userDto.getMatchingPassword())) {
+            log.warn("registerUser() - passwords doesn't match");
+            //todo throw exception
+        }
+        User user = modelMapper.map(userDto, User.class);
+        Optional<User> optionalCheckedDuplicateUser = userRepository.findOneByUserName(user.getUserName());
+        if (optionalCheckedDuplicateUser.isPresent()) {
+            log.warn("registerUser() - user with name={} already exists", user.getUserName());
+            //todo throw exception
+        }
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        Optional<Role> optionalNewUserDefaultRole = roleRepository.findOneByName("ROLE_USER");
+        if (!optionalNewUserDefaultRole.isPresent()) {
+            log.warn("registerUser() - default Role with name \"ROLE_USER\" does not exist");
+            //todo throw exception
+        }
+        Role newUserDefaultRole = optionalNewUserDefaultRole.get();
+        log.debug("registerUser() - default Role={}", newUserDefaultRole);
+        user.addRole(newUserDefaultRole);
+        User registeredUser = userRepository.save(user);
+        UserDto registeredUserDto = modelMapper.map(registeredUser, UserDto.class);
+        log.info("registerUser() - Finish");
+        log.debug("registerUser() - registered UserDto={}", registeredUserDto);
+        return registeredUserDto;
     }
 }

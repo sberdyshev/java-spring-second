@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.DefaultSavedRequest;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
-import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.user.dto.UserDto;
 import ru.sberdyshev.geekbrains.java.javaspringsecond.user.service.UserService;
@@ -16,8 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Enumeration;
 
 @Slf4j
 @Component
@@ -43,11 +39,14 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         HttpSession session = request.getSession();
         session.setAttribute("user", userDto);
         DefaultSavedRequest springSecuritySavedRequest = (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
-        if (springSecuritySavedRequest != null) {
+        if (springSecuritySavedRequest != null && !springSecuritySavedRequest.getRedirectUrl().contains("registration")) {
             log.debug("onAuthenticationSuccess() -  using springSecuritySavedRequest={}", springSecuritySavedRequest);
             super.onAuthenticationSuccess(request, response, authentication);
         } else {
             String referrer = (String) request.getSession().getAttribute("referrer");
+            if (referrer == null || referrer.contains("registration")) {
+                referrer = "/products";
+            }
             log.debug("onAuthenticationSuccess() -  using referrer={}", referrer);
             getRedirectStrategy().sendRedirect(request, response, referrer);
         }
