@@ -1,20 +1,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<!--<nav th:fragment="navbar" class="navbar">-->
-<!--    <a th:href="@{/products}">Products</a>-->
-<!--    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/products/new}">New Product</a>-->
-<!--    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/users}">Users</a>-->
-<!--    <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/users/new}">New User</a>-->
-<!--    <a sec:authorize="isAnonymous()" th:href="@{/login}">Login</a>-->
-<!--    <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout <span-->
-<!--            sec:authentication="principal.username"></span></a>-->
-
-<!--</nav>-->
-
 <nav class="navbar navbar-expand-lg navbar-light" th:fragment="navbar">
     <div class="container box_1620">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <!--                <a class="navbar-brand logo_h" href="products.html"><img src="img/logo.png" alt=""></a>-->
         <a class="navbar-brand logo_h" href="/app/products">MY E-SHOP</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse"
                 data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -23,33 +10,16 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-<!--            <ul class="nav navbar-nav menu_nav justify-content-center">-->
-<!--                <li th:if="${#httpServletRequest.requestURI} == '/app/products'" class="nav-item active">-->
-<!--                    <a class="nav-link" href="/app/products">Products</a>-->
-<!--                </li>-->
-<!--                <li th:unless="${#httpServletRequest.requestURI} == '/app/products'" class="nav-item">-->
-<!--                    <a class="nav-link" href="/app/products">Products</a>-->
-<!--                </li>-->
-
-
-
-                <!--                        <li class="nav-item submenu dropdown">-->
-                <!--                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"-->
-                <!--                               aria-haspopup="true"-->
-                <!--                               aria-expanded="false">Pages</a>-->
-                <!--                            <ul class="dropdown-menu">-->
-                <!--                                <li class="nav-item"><a class="nav-link" href="blog-details.html">Blog Details</a></li>-->
-                <!--                            </ul>-->
-                <!--                        </li>-->
-<!--                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>-->
-<!--            </ul>-->
-            <ul class="nav navbar-nav menu_nav justify-content-end">
-                <li th:if="${#httpServletRequest.requestURI} == '/app/orders'" sec:authorize="isAuthenticated()" class="nav-item active">
+            <ul th:unless="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+                class="nav navbar-nav menu_nav justify-content-end"
+                >
+                <li th:if="${#httpServletRequest.requestURI} == '/app/orders'" sec:authorize="isAuthenticated()"
+                    class="nav-item active">
                     <a class="nav-link" href="/app/orders">My orders</a>
                 </li>
-                <li th:unless="${#httpServletRequest.requestURI} == '/app/orders'" sec:authorize="isAuthenticated()" class="nav-item">
+                <li th:unless="${#httpServletRequest.requestURI} == '/app/orders'" sec:authorize="isAuthenticated()"
+                    class="nav-item">
                     <a class="nav-link" href="/app/orders">My orders</a>
                 </li>
                 <li th:if="${#httpServletRequest.requestURI} == '/app/cart'" class="nav-item active">
@@ -58,13 +28,14 @@
                 <li th:unless="${#httpServletRequest.requestURI} == '/app/cart'" class="nav-item">
                     <a class="nav-link" href="/app/cart">Cart</a>
                 </li>
-                <li style="text-align: right" th:if="${#httpServletRequest.requestURI} == '/app/users/current-user'" sec:authorize="isAuthenticated()" class="nav-item active">
+                <li style="text-align: right" th:if="${#httpServletRequest.requestURI} == '/app/users/current-user'"
+                    sec:authorize="isAuthenticated()" class="nav-item active">
                     <a class="nav-link" href="/app/users/current-user">My profile</a>
                 </li>
-                <li style="text-align: right" th:unless="${#httpServletRequest.requestURI} == '/app/users/current-user'" sec:authorize="isAuthenticated()" class="nav-item">
+                <li style="text-align: right"
+                    th:unless="${#httpServletRequest.requestURI} == '/app/users/current-user'"
+                    sec:authorize="isAuthenticated()" class="nav-item">
                     <a class="nav-link" href="/app/users/current-user">My profile</a>
-                </li>
-                <li class="nav-item">
                 </li>
 
                 <li style="padding-top: 30px" sec:authorize="isAnonymous()" class="nav-item">
@@ -79,12 +50,23 @@
                     </form>
                 </li>
             </ul>
-            <!--                    <ul class="nav navbar-nav navbar-right navbar-social">-->
-            <!--                        <li><a href="#"><i class="ti-facebook"></i></a></li>-->
-            <!--                        <li><a href="#"><i class="ti-twitter-alt"></i></a></li>-->
-            <!--                        <li><a href="#"><i class="ti-instagram"></i></a></li>-->
-            <!--                        <li><a href="#"><i class="ti-skype"></i></a></li>-->
-            <!--                    </ul>-->
+            <ul th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+                class="nav navbar-nav menu_nav justify-content-end"
+                >
+                <li th:if="${#httpServletRequest.requestURI} == '/app/admin/orders'"
+                    class="nav-item active">
+                    <a class="nav-link" href="/app/admin/orders">Orders</a>
+                </li>
+                <li th:unless="${#httpServletRequest.requestURI} == '/app/admin/orders'"
+                    class="nav-item">
+                    <a class="nav-link" href="/app/admin/orders">Orders</a>
+                </li>
+                <li style="padding-top: 30px" sec:authorize="isAuthenticated()" class="nav-item">
+                    <form th:action="@{/logout}" th:method="post">
+                        <button type="submit" class="very-small-button">Logout</button>
+                    </form>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>

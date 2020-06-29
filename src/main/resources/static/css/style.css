@@ -26,6 +26,30 @@ very-small-button {
     cursor: pointer
 }
 
+.select-status-control {
+    width: 354px;
+    padding-bottom: 3px;
+}
+
+.select-element {
+    width: 177px;
+    height: 40px;
+}
+
+div.text-status{
+    display:inline-block;
+    vertical-align:top;
+}
+div.select-status{
+    display:inline-block;
+    vertical-align:top;
+}
+div.button-status{
+    width:0.5%;
+    display:inline-block;
+    vertical-align:top;
+}
+
 button:focus {
     outline: 0;
     box-shadow: none

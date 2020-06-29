@@ -72,7 +72,38 @@
     <section class="mb-30px">
         <div class="container">
             <div>
-                <p class="navbar-brand logo_h">Cart:</p>
+                <p class="navbar-brand logo_h" th:text="'Order id: ' + ${orderDto.id}">Unknown order id</p>
+            </div>
+            <p class="navbar-brand logo_h"
+               th:text="'Ordered by: ' + ${orderDto.user.userName}">Unknown
+                user</p>
+            <p class="navbar-brand logo_h"
+               th:text="'User contact info: ' + ${orderDto.user.firstName}">Unknown
+                user</p>
+            <div class="select-status-control">
+                <form method="POST" th:action="@{'/admin/orders/' + ${orderDto.id} + '/status/new'}">
+                    <div>
+                        <div class="text-status">
+                            <p class="navbar-brand logo_h">Status:</p>
+                        </div>
+                        <div class="select-status">
+                            <select class="select-element" name="selectedStatusCode" id="statusSelect"
+                                    required>
+                                <option
+                                        th:each="statusDto : ${statusDtoList}"
+                                        th:value="${statusDto.code}"
+                                        th:text="${statusDto.description}"
+                                        th:selected="${statusDto.code.equals(orderDto.orderStatus.statusData.code)}">
+                                </option>
+                            </select>
+                        </div>
+                        <div class="button-status">
+                            <button type="submit" name="newStatusCode" class="very-small-button select-element">Change
+                                status
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
             <table class="table">
                 <thead class="thead-dark">
@@ -89,9 +120,12 @@
                 </thead>
 
                 <tr class="myTableRow responsive-row"
-                    th:unless="${shoppingCartDto.orderItems.isEmpty()}"
-                    th:each="orderItem : ${shoppingCartDto.orderItems}">
-                    <td><a th:href="@{/products/product/name/{product-name}(product-name=${orderItem.product.name})}"
+                    th:unless="${orderDto.orderItems.isEmpty()}"
+                    th:each="orderItem : ${orderDto.orderItems}">
+                    <!--                    <td><a th:href="@{/orders/{id}(id=${orderDto.id})}" th:text="${orderDto.id}">id</a></td>-->
+                    <!--                    <td th:text="${orderDto.id}"/>-->
+                    <td>
+                        <a th:href="@{/admin/products/product/name/{product-name}(product-name=${orderItem.product.name})}"
                            th:text="${orderItem.product.name}"/></td>
                     <td>
                         <img th:unless="${orderItem.product.productImage?.imagePath.isEmpty() or orderItem.product.productImage.isNotAvailageImage()}"
@@ -103,39 +137,41 @@
                     <td th:text="${orderItem.product.shortDescription}"/>
                     <td th:text="${orderItem.product.price}"/>
                     <td th:text="${orderItem.count}"/>
+
                     <td class="td-with-button">
-                        <form method="POST" th:action="@{'/cart/product/add/' + ${orderItem.product.id}}">
+                        <form method="POST"
+                              th:action="@{'/admin/orders/' + ${orderDto.id} + '/product/' + ${orderItem.product.id} + '/add'}">
                             <button type="submit" name="+" value="value" class="very-small-button">+</button>
                         </form>
                     </td>
                     <td class="td-with-button">
-                        <form method="POST" th:action="@{'/cart/product/subtract/' + ${orderItem.product.id}}">
+                        <form method="POST"
+                              th:action="@{'/admin/orders/' + ${orderDto.id} + '/product/' + ${orderItem.product.id} + '/subtract'}">
                             <button type="submit" name="-" value="value" class="very-small-button">-</button>
                         </form>
                     </td>
                     <td class="td-with-button">
-                        <form method="POST" th:action="@{'/cart/product/delete/' + ${orderItem.product.id}}">
+                        <form method="POST"
+                              th:action="@{'/admin/orders/' + ${orderDto.id} + '/product/' + ${orderItem.product.id} + '/delete'}">
                             <button type="submit" name="Delete" value="value" class="very-small-button">Delete</button>
                         </form>
                     </td>
                 </tr>
+
                 <tr class="myTableRow responsive-row"
-                    th:unless="${shoppingCartDto.orderItems.isEmpty()}">
-                    <td colspan="8" th:text="'Total cost: ' + ${shoppingCartDto.totalCost}"></td>
+                    th:unless="${orderDto.orderItems.isEmpty()}">
+                    <td colspan="8" th:text="'Total cost: ' + ${totalCost}"></td>
                 </tr>
-                <tr class="myTableRow responsive-row"
-                    th:unless="${shoppingCartDto.orderItems.isEmpty()}">
-                    <td colspan="8">
-                        <form method="POST" th:action="@{'/orders/confirm'}">
-                            <button type="submit" name="Make an order" value="value" class="button">Make an order
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                <tr class="myTableRow responsive-row" th:if="${shoppingCartDto.orderItems.isEmpty()}">
-                    <td colspan="8">Cart is empty</td>
+
+                <tr class="myTableRow responsive-row" th:if="${orderDto.orderItems.isEmpty()}">
+                    <td colspan="8">No data</td>
                 </tr>
             </table>
+
+
+            <form method="POST" th:action="@{'/admin/orders/' + ${orderDto.id} + '/cancel'}">
+                <button type="submit" name="Cancel order" class="button">Cancel order</button>
+            </form>
         </div>
     </section>
 
